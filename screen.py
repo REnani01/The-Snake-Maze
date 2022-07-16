@@ -1,15 +1,17 @@
+
+from pickle import GLOBAL
 from time import sleep
 import turtle, tkinter, math, random
 from tkinter import messagebox
 
 # Screen Dimensions and Delay (ms)
-WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 100, 10, 0
+WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 200, 10, 0
 
 def reset():
-    global SCORE, snake, snake_direction, food_pos
+    global SCORE, snake, snake_direction, food_pos, DELAY
     
     # Initial Snake on x-axis, it's direction and user score
-    SCORE, snake_direction = 0, "up"
+    SCORE, DELAY, snake_direction = 0, 200, "up"
     snake = [[0,0], [20,0]]
     canvas.title('Snake')
     food_pos = generate_food_location()
@@ -22,6 +24,20 @@ offsets = {
     "left": (-20,0),
     "right": (20,0)
 }
+
+# Game speed increases as snake grows
+def levels():
+    global DELAY
+    DELAY-=10
+
+    if DELAY <= 50:
+        my_turtle.shape("circle")
+    elif DELAY <= 100:
+        my_turtle.color("white", "red")
+    elif DELAY <= 150:
+        my_turtle.color("black", "yellow")
+
+
 
 def direction_keys():
     canvas.onkey(lambda: set_snake_direction("up"), "Up")
@@ -52,11 +68,6 @@ def set_snake_direction(direction):
         if snake_direction != 'left':
             snake_direction = 'right'
 
-def go_left():
-    global snake_direction
-    if snake_direction != 'right':
-        snake_direction = 'left'
-
 def game_loop():
 
     # Increment Head location and Pop tail location to maintain Snake Size
@@ -82,14 +93,19 @@ def game_loop():
         # If snake doesn't eat it stays the same length
         if not eat_food(): 
             snake.pop(0)
+        else: levels()
+
 
         if SCORE >= 1:
             canvas.title(f'Snake         Score: {SCORE}')
+            
+
 
         for location in snake:
             my_turtle.goto(location[0], location[1])
             my_turtle.stamp()
-            
+        
+        
         canvas.update()
         turtle.ontimer(game_loop, DELAY)
 
@@ -147,7 +163,7 @@ direction_keys()
 # ////Turtle Object Description
 my_turtle = turtle.Turtle()
 my_turtle.shape("square")
-my_turtle.color("white", "red")
+my_turtle.color("white", "green")
 my_turtle.penup()
 my_turtle.stamp()
 
