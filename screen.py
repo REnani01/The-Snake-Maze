@@ -2,8 +2,6 @@ from time import sleep
 import turtle, tkinter, math, random
 from tkinter import messagebox
 
-from matplotlib.pyplot import title
-
 # Screen Dimensions and Delay (ms)
 WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 100, 10, 0
 
@@ -18,8 +16,6 @@ def reset():
     food.goto(food_pos) 
     game_loop()
     
-
-
 offsets = {
     "up": (0,20),
     "down": (0,-20),
@@ -27,25 +23,34 @@ offsets = {
     "right": (20,0)
 }
 
-def go_up():
-    # To change snake direction
-    global snake_direction
-    '''Snake can only do 90 degree turns
-        if it's heading down it can't go up 
-        since that would mean its moving over itself. 
-    '''
-    if snake_direction != 'down':
-        snake_direction = 'up'
+def direction_keys():
+    canvas.onkey(lambda: set_snake_direction("up"), "Up")
+    canvas.onkey(lambda: set_snake_direction("down"), "Down")
+    canvas.onkey(lambda: set_snake_direction("left"), "Left")
+    canvas.onkey(lambda: set_snake_direction("right"), "Right")
 
-def go_right():
-    global snake_direction
-    if snake_direction != 'left':
-        snake_direction = 'right'
+def set_snake_direction(direction):
+    '''Setting Snake Directions, snake can only make 
+    90 degree turns since it shoul'd travel over itself'''
 
-def go_down():
-    global snake_direction
-    if snake_direction != 'up':
-        snake_direction = 'down'
+    #Global since we're updating an external variable
+    global snake_direction 
+
+    if direction == 'up':
+        if snake_direction != 'down':
+            snake_direction = 'up'
+
+    elif direction == 'down':
+        if snake_direction != 'up':
+            snake_direction = 'down'
+
+    elif direction == 'left':
+        if snake_direction != 'right':
+            snake_direction = 'left'
+
+    elif direction == 'right':
+        if snake_direction != 'left':
+            snake_direction = 'right'
 
 def go_left():
     global snake_direction
@@ -126,23 +131,18 @@ def tryagain():
         \nWant another shot?')
     return response
 
-
 ###Canvas
 canvas = turtle.Screen()
+canvas.title(f'Welcome to Snake')
 canvas.setup(WIDTH, HEIGHT)
 canvas.title("Snake")
 canvas.bgcolor('Black')
 canvas.tracer(0)
 #####
 
-
 # Event Handler
 canvas.listen()
-canvas.onkey(go_up, "Up")
-canvas.onkey(go_right, "Right")
-canvas.onkey(go_down, "Down")
-canvas.onkey(go_left, "Left")
-canvas.title(f'Welcome to Snake')
+direction_keys()
 
 
 # ////Turtle Object Description
