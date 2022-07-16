@@ -124,7 +124,6 @@ def food_mixer():
         and color'''
     pass
 
-# Enable User to retry game
 def tryagain():
     # Displays Score when user dies
     response = tkinter.messagebox.askyesnocancel(title="GAME OVER", message=f'Oops you died Your score is {SCORE}\
@@ -165,3 +164,32 @@ reset()
 # Infinite loop to keep canvas open until 
 # user presses X
 turtle.done()
+
+
+
+
+
+'''
+Upcoming Features
+
+Level Ups
+- Add images for the food icons
+- Add canvas backgroung image
+- As level increases increase snake speed and change background designs
+start with calm mode then add different effects
+-Change snake design as it grows to a certain size 
+
+
+Lost in the multiverse Mode 
+
+- Invert Snake key bindings and make a multidimension snake game, 
+mirror snake reflection and add effects.
+- Add obstacles that come and go as level increases
+
+
+
+
+- Utilize OOP and Separate Concerns
+- Implement Dry 
+
+'''
