@@ -1,17 +1,26 @@
 from time import sleep
-import tkinter
-import turtle, math, random
+import turtle, tkinter, math, random
 from tkinter import messagebox
-
-
 
 # Screen Dimensions and Delay (ms)
 WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 100, 10, 0
 
-# Initial Snake on x-axis and it's direction
-snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
+def reset():
+    global SCORE, snake, snake_direction, food_pos
+    
+    # Initial Snake on x-axis, it's direction and user score
+    SCORE, snake_direction = 0, "up"
+    snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
+    
 
-snake_direction = "up"
+    if SCORE >= 1:
+            canvas.title(f'SNAKE         Score: {SCORE}')
+    
+    food_pos = generate_food_location()
+    food.goto(food_pos) 
+    game_loop()
+
+
 offsets = {
     "up": (0,20),
     "down": (0,-20),
@@ -58,8 +67,11 @@ def game_loop():
     # Collision checker
     if new_head in snake or new_head[0] < -WIDTH/2 or new_head[0] > WIDTH/2\
         or new_head[1] < -HEIGHT/2 or new_head[1] > HEIGHT/2:
-        animation()
-        turtle.bye()
+        
+        if tryagain():
+            reset()
+        else:
+            turtle.bye()
     else:
         snake.append(new_head)
 
@@ -70,9 +82,6 @@ def game_loop():
         for location in snake:
             my_turtle.goto(location[0], location[1])
             my_turtle.stamp()
-
-        if SCORE > 1:
-            canvas.title(f'{SCORE}')
             
         canvas.update()
         turtle.ontimer(game_loop, DELAY)
@@ -108,9 +117,13 @@ def food_mixer():
         and color'''
     pass
 
-def animation():
+# Enable User to retry game
+def tryagain():
     # Displays Score when user dies
-     tkinter.messagebox.showinfo(title="GAME OVER", message=f'Oops you died\nYour score is {SCORE}')
+    response = tkinter.messagebox.askyesnocancel(title="GAME OVER", message=f'Oops you died Your score is {SCORE}\
+        \nWant another shot?')
+    return response
+
 
 ###Canvas
 canvas = turtle.Screen()
@@ -143,13 +156,9 @@ food.shape("circle")
 food.shapesize(FOOD_SIZE/20) #In Pixel
 food.color("Black", "Yellow")
 food.penup()
-food_pos = generate_food_location()
-food.goto(food_pos)
-
-
 
 # Move Snake Along X-Axis
-game_loop()
+reset()
 
 # Infinite loop to keep canvas open until 
 # user presses X
