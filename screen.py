@@ -1,3 +1,4 @@
+from time import sleep
 import turtle
 
 # Screen Dimensions and Delay (ms)
@@ -5,10 +6,6 @@ WIDTH, HEIGHT, DELAY = 600, 600, 100
 
 # Initial Snake on x-axis and it's direction
 snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
-
-
-
-
 
 snake_direction = "up"
 offsets = {
@@ -43,7 +40,7 @@ def go_left():
     if snake_direction != 'right':
         snake_direction = 'left'
 
-def move_snake():
+def game_loop():
 
     # Increment Head location and Pop tail location to maintain Snake Size
     my_turtle.clearstamps()
@@ -54,15 +51,24 @@ def move_snake():
     new_head[0] += offsets[snake_direction][0]
     new_head[1] += offsets[snake_direction][1]
 
-    snake.append(new_head)
-    snake.pop(0)
-    
-    for location in snake:
-        my_turtle.goto(location[0], location[1])
-        my_turtle.stamp()
+    # Collision checker
+    if new_head in snake or new_head[0] < -WIDTH/2 or new_head[0] > WIDTH/2\
+        or new_head[1] < -HEIGHT/2 or new_head[1] > HEIGHT/2:
+        sleep(1)
+        turtle.bye()
 
-    canvas.update()
-    turtle.ontimer(move_snake, DELAY)
+        # Add way to try again and give nice pop up with 
+        # total time played
+    else:
+        snake.append(new_head)
+        snake.pop(0)
+        
+        for location in snake:
+            my_turtle.goto(location[0], location[1])
+            my_turtle.stamp()
+
+        canvas.update()
+        turtle.ontimer(game_loop, DELAY)
 
 
 ###Canvas
@@ -72,7 +78,6 @@ canvas.title("Snake")
 canvas.bgcolor('Black')
 canvas.tracer(0)
 #####
-
 
 
 # Event Handler
@@ -90,11 +95,8 @@ my_turtle.color("white", "red")
 my_turtle.penup()
 my_turtle.stamp()
 
-
-
 # Move Snake Along X-Axis
-move_snake()
-
+game_loop()
 
 # Infinite loop to keep canvas open until 
 # user presses X
