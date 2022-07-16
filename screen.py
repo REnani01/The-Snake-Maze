@@ -10,7 +10,7 @@ def reset():
     
     # Initial Snake on x-axis, it's direction and user score
     SCORE, snake_direction = 0, "up"
-    snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
+    snake = [[0,0], [20,0]]
     canvas.title('Snake')
     food_pos = generate_food_location()
     food.goto(food_pos) 
