@@ -21,27 +21,21 @@ offsets = {
 def go_up():
     # To change snake direction
     global snake_direction
-    '''Snake can only do 90 degree turns
-        if it's heading down it can't go up 
-        since that would mean its moving over itself. 
+    '''Snake can revert on itself
     '''
-    if snake_direction != 'down':
-        snake_direction = 'up'
+    snake_direction = 'up'
 
 def go_right():
     global snake_direction
-    if snake_direction != 'left':
-        snake_direction = 'right'
+    snake_direction = 'right'
 
 def go_down():
     global snake_direction
-    if snake_direction != 'up':
-        snake_direction = 'down'
+    snake_direction = 'down'
 
 def go_left():
     global snake_direction
-    if snake_direction != 'right':
-        snake_direction = 'left'
+    snake_direction = 'left'
 
 def move_snake():
 
@@ -49,7 +43,7 @@ def move_snake():
     my_turtle.clearstamps()
     new_head = snake[-1].copy()
     
-    # X[0] and Y[1] location updates from offset Dictionary containing direction 
+    # X = [0] and Y = [1] location updates from offset Dictionary containing direction 
 
     new_head[0] += offsets[snake_direction][0]
     new_head[1] += offsets[snake_direction][1]
