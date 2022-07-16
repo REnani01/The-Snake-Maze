@@ -2,6 +2,8 @@ from time import sleep
 import turtle, tkinter, math, random
 from tkinter import messagebox
 
+from matplotlib.pyplot import title
+
 # Screen Dimensions and Delay (ms)
 WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 100, 10, 0
 
@@ -11,14 +13,11 @@ def reset():
     # Initial Snake on x-axis, it's direction and user score
     SCORE, snake_direction = 0, "up"
     snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
-    
-
-    if SCORE >= 1:
-            canvas.title(f'SNAKE         Score: {SCORE}')
-    
+    canvas.title('Snake')
     food_pos = generate_food_location()
     food.goto(food_pos) 
     game_loop()
+    
 
 
 offsets = {
@@ -78,6 +77,9 @@ def game_loop():
         # If snake doesn't eat it stays the same length
         if not eat_food(): 
             snake.pop(0)
+
+        if SCORE >= 1:
+            canvas.title(f'Snake         Score: {SCORE}')
 
         for location in snake:
             my_turtle.goto(location[0], location[1])
