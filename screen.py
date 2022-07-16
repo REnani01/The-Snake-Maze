@@ -1,12 +1,12 @@
-from dis import dis
 from time import sleep
+import tkinter
 import turtle, math, random
+from tkinter import messagebox
 
-from numpy import mat
-from sqlalchemy import true
+
 
 # Screen Dimensions and Delay (ms)
-WIDTH, HEIGHT, DELAY, FOOD_SIZE = 600, 600, 100, 10
+WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 100, 10, 0
 
 # Initial Snake on x-axis and it's direction
 snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
@@ -58,7 +58,7 @@ def game_loop():
     # Collision checker
     if new_head in snake or new_head[0] < -WIDTH/2 or new_head[0] > WIDTH/2\
         or new_head[1] < -HEIGHT/2 or new_head[1] > HEIGHT/2:
-        sleep(1)
+        animation()
         turtle.bye()
     else:
         snake.append(new_head)
@@ -71,6 +71,9 @@ def game_loop():
             my_turtle.goto(location[0], location[1])
             my_turtle.stamp()
 
+        if SCORE > 1:
+            canvas.title(f'{SCORE}')
+            
         canvas.update()
         turtle.ontimer(game_loop, DELAY)
 
@@ -91,12 +94,23 @@ def generate_food_location():
     return x,y
 
 def eat_food():
-    global food_pos
+    global food_pos, SCORE
     if get_distance(snake[-1], food_pos) < 20:
+        SCORE += 1
         food_pos = generate_food_location()
         food.goto(food_pos)
-        return true
+
+        return True
     return False
+
+def food_mixer():
+    '''Store food shapes in dict, whenever snake eats generate new food shape
+        and color'''
+    pass
+
+def animation():
+    # Displays Score when user dies
+     tkinter.messagebox.showinfo(title="GAME OVER", message=f'Oops you died\nYour score is {SCORE}')
 
 ###Canvas
 canvas = turtle.Screen()
@@ -113,6 +127,7 @@ canvas.onkey(go_up, "Up")
 canvas.onkey(go_right, "Right")
 canvas.onkey(go_down, "Down")
 canvas.onkey(go_left, "Left")
+canvas.title(f'Welcome to Snake')
 
 
 # ////Turtle Object Description
