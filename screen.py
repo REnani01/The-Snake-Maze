@@ -146,7 +146,7 @@ def tryagain():
 
 ###Canvas
 canvas = turtle.Screen()
-# canvas.bgpic('./')
+# canvas.bgpic("easy.gif")
 canvas.title(f'Welcome to Snake')
 canvas.setup(WIDTH, HEIGHT)
 canvas.title("Snake")
