@@ -1,8 +1,12 @@
+from dis import dis
 from time import sleep
-import turtle
+import turtle, math, random
+
+from numpy import mat
+from sqlalchemy import true
 
 # Screen Dimensions and Delay (ms)
-WIDTH, HEIGHT, DELAY = 600, 600, 100
+WIDTH, HEIGHT, DELAY, FOOD_SIZE = 600, 600, 100, 10
 
 # Initial Snake on x-axis and it's direction
 snake = [[0,0], [20,0], [40,0], [60,0], [80,0]]
@@ -56,13 +60,13 @@ def game_loop():
         or new_head[1] < -HEIGHT/2 or new_head[1] > HEIGHT/2:
         sleep(1)
         turtle.bye()
-
-        # Add way to try again and give nice pop up with 
-        # total time played
     else:
         snake.append(new_head)
-        snake.pop(0)
-        
+
+        # If snake doesn't eat it stays the same length
+        if not eat_food(): 
+            snake.pop(0)
+
         for location in snake:
             my_turtle.goto(location[0], location[1])
             my_turtle.stamp()
@@ -70,6 +74,29 @@ def game_loop():
         canvas.update()
         turtle.ontimer(game_loop, DELAY)
 
+def get_distance(pos1, pos2):
+    x1, y1 = pos1
+    x2, y2 = pos2
+
+    '''Distance between 2 points using Pythagorean Theorem'''
+    distance = math.sqrt(math.pow((y2-y1), 2) + math.pow((x2-x1), 2))
+    return distance
+
+def generate_food_location():
+    '''Same as border collision but with offset to avoid putting food outside
+        the game frame
+    '''
+    x = random.randint(-WIDTH/2 + FOOD_SIZE, WIDTH/2 - FOOD_SIZE)
+    y = random.randint(-HEIGHT/2 + FOOD_SIZE, HEIGHT/2 - FOOD_SIZE)
+    return x,y
+
+def eat_food():
+    global food_pos
+    if get_distance(snake[-1], food_pos) < 20:
+        food_pos = generate_food_location()
+        food.goto(food_pos)
+        return true
+    return False
 
 ###Canvas
 canvas = turtle.Screen()
@@ -94,6 +121,17 @@ my_turtle.shape("square")
 my_turtle.color("white", "red")
 my_turtle.penup()
 my_turtle.stamp()
+
+# Food Turtle Item
+food = turtle.Turtle()
+food.shape("circle")
+food.shapesize(FOOD_SIZE/20) #In Pixel
+food.color("Black", "Yellow")
+food.penup()
+food_pos = generate_food_location()
+food.goto(food_pos)
+
+
 
 # Move Snake Along X-Axis
 game_loop()
