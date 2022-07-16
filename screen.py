@@ -38,7 +38,6 @@ def levels():
         my_turtle.color("black", "yellow")
 
 
-
 def direction_keys():
     canvas.onkey(lambda: set_snake_direction("up"), "Up")
     canvas.onkey(lambda: set_snake_direction("down"), "Down")
@@ -148,6 +147,7 @@ def tryagain():
 
 ###Canvas
 canvas = turtle.Screen()
+canvas.bgpic('./')
 canvas.title(f'Welcome to Snake')
 canvas.setup(WIDTH, HEIGHT)
 canvas.title("Snake")
