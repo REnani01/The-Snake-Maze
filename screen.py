@@ -1,5 +1,4 @@
 
-from pickle import GLOBAL
 from time import sleep
 import turtle, tkinter, math, random
 from tkinter import messagebox
