@@ -4,6 +4,8 @@ from time import sleep
 import turtle, tkinter, math, random
 from tkinter import messagebox
 
+from entity import Entity
+
 
 # Screen Dimensions and Delay (ms)
 BORDER = 0
@@ -17,7 +19,7 @@ def reset():
     snake = [[0,0], [20,0]]
     canvas.title('Snake')
     food_pos = generate_food_location()
-    food.goto(food_pos) 
+    food.postition(food_pos) 
     game_loop()
     
 offsets = {
@@ -38,7 +40,6 @@ def levels():
         my_turtle.color("white", "red")
     elif DELAY <= 150:
         my_turtle.color("black", "yellow")
-
 
 def direction_keys():
     canvas.onkey(lambda: set_snake_direction("up"), "Up")
@@ -92,24 +93,26 @@ def game_loop():
         snake.append(new_head)
 
         # If snake doesn't eat it stays the same length
-        if not eat_food(): 
+        if not eat_food():  
             snake.pop(0)
         else: levels()
-
-    
 
         if SCORE >= 1:
             canvas.title(f'Snake         Score: {SCORE}')
             
-
-
         for location in snake:
-            my_turtle.goto(location[0], location[1])
+            my_turtle.postition(location[0], location[1])
             my_turtle.stamp()
-        
         
         canvas.update()
         turtle.ontimer(game_loop, DELAY)
+
+def mineField():
+    x = random.randint(-WIDTH/2, WIDTH/2)
+    y = random.randint(-WIDTH/2, WIDTH/2)
+
+
+
 
 def get_distance(pos1, pos2):
     x1, y1 = pos1
@@ -132,7 +135,7 @@ def eat_food():
     if get_distance(snake[-1], food_pos) < 20:
         SCORE += 1
         food_pos = generate_food_location()
-        food.goto(food_pos)
+        food.postition(food_pos)
 
         return True
     return False
@@ -166,19 +169,18 @@ canvas.listen()
 direction_keys()
 
 
-# ////Turtle Object Description
-my_turtle = turtle.Turtle()
-my_turtle.shape("square")
-my_turtle.color("white", "green")
-my_turtle.penup()
-my_turtle.stamp()
+# # ////Turtle Object Description
+# my_turtle = turtle.Turtle()
+# my_turtle.shape("square")
+# my_turtle.color("white", "green")
+# my_turtle.penup()
+# my_turtle.stamp()
 
 # Food Turtle Item
-food = turtle.Turtle()
-food.shape("circle")
-food.shapesize(FOOD_SIZE/20) #In Pixel
-food.color("Black", "Yellow")
-food.penup()
+food = Entity('food',"circle", "Red", False, True, FOOD_SIZE/20)
+my_turtle = Entity("my_turtle", "Square", "white", True, True, None)
+
+
 
 
 
@@ -220,5 +222,11 @@ mirror snake reflection and add effects.
 
 - Utilize OOP and Separate Concerns
 - Implement Dry 
+
+
+
+Whenever snake grows by 2 add minefield
+
+
 
 '''
