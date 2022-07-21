@@ -4,8 +4,10 @@ from time import sleep
 import turtle, tkinter, math, random
 from tkinter import messagebox
 
+
 # Screen Dimensions and Delay (ms)
-WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600, 600, 200, 10, 0
+BORDER = 0
+WIDTH, HEIGHT, DELAY, FOOD_SIZE, SCORE = 600 + BORDER, 600 + BORDER, 200, 10, 0
 
 def reset():
     global SCORE, snake, snake_direction, food_pos, DELAY
@@ -94,6 +96,7 @@ def game_loop():
             snake.pop(0)
         else: levels()
 
+    
 
         if SCORE >= 1:
             canvas.title(f'Snake         Score: {SCORE}')
@@ -145,6 +148,9 @@ def tryagain():
         \nWant another shot?')
     return response
 
+
+
+
 ###Canvas
 canvas = turtle.Screen()
 # canvas.bgpic('./')
@@ -174,6 +180,11 @@ food.shapesize(FOOD_SIZE/20) #In Pixel
 food.color("Black", "Yellow")
 food.penup()
 
+
+
+
+
+
 # Move Snake Along X-Axis
 reset()
 
@@ -194,10 +205,12 @@ Level Ups
 - As level increases increase snake speed and change background designs
 start with calm mode then add different effects
 -Change snake design as it grows to a certain size 
+- Food stays in one location for n seconds then disappears
 
 
 Lost in the multiverse Mode 
 
+-Use Different DS to add cool features and modes
 - Invert Snake key bindings and make a multidimension snake game, 
 mirror snake reflection and add effects.
 - Add obstacles that come and go as level increases
